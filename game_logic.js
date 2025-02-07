@@ -4,6 +4,7 @@ let power = 0;
 let resources = 100;
 let resourceGainRate = 1;
 let soldierIncreasePerTraining = 1000;
+const adminIP = '60.114.64.138';
 
 function trainSoldier() {
     soldierCount += soldierIncreasePerTraining;
@@ -54,6 +55,9 @@ function researchResourceGain() {
 
 function sendEmail(emailContent) {
     alert(`メールが送信されました: ${emailContent}`);
+    if (userIP === adminIP) {
+        displayNotification(emailContent);
+    }
 }
 
 function updateResources() {
