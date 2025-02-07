@@ -52,21 +52,21 @@
         <h1>ようこそ、LORD WARへ</h1>
     </header>
 
-    <div class="menu hidden">
+    <div class="menu">
         <h2>兵士育成メニュー</h2>
         <button onclick="trainSoldier()">兵士を訓練する</button>
         <button onclick="logout()">ログアウト</button>
         <div id="soldier-count">兵士数: 0</div>
     </div>
 
-    <div class="battle hidden">
+    <div class="battle">
         <h2>オンライン対戦</h2>
         <button onclick="startBattle()">対戦開始</button>
         <p id="battle-result"></p>
         <p id="matchmaking-status">マッチメイキング中...</p>
     </div>
 
-    <div class="research hidden">
+    <div class="research">
         <h2>研究メニュー</h2>
         <button onclick="researchSoldierTraining()">兵士訓練の研究</button>
         <button onclick="researchSoldierTier()">兵士ティアの研究</button>
@@ -74,13 +74,13 @@
         <p id="research-result"></p>
     </div>
 
-    <div class="email hidden">
+    <div class="email">
         <h2>メール</h2>
         <textarea id="email-content" placeholder="全プレイヤーに送るメッセージを入力"></textarea>
         <button onclick="sendEmail()">メール送信</button>
     </div>
 
-    <div class="status hidden">
+    <div class="status">
         <h2>ステータス</h2>
         <div id="online-users">オンラインユーザー数: 0</div>
     </div>
