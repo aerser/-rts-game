@@ -13,7 +13,7 @@
             flex-direction: column;
             align-items: center;
         }
-        header, .menu, .login, .register, .battle, .research, .email, .status {
+        header, .menu, .battle, .research, .email, .status {
             background-color: #333;
             color: white;
             padding: 10px;
@@ -41,26 +41,6 @@
     <header>
         <h1>ようこそ、LORD WARへ</h1>
     </header>
-
-    <div class="login">
-        <h2>ログイン</h2>
-        <label for="username">ユーザー名:</label>
-        <input type="text" id="username" name="username" required>
-        <label for="password">パスワード:</label>
-        <input type="password" id="password" name="password" required>
-        <button onclick="login()">ログイン</button>
-        <button onclick="showRegister()">新規登録</button>
-    </div>
-
-    <div class="register hidden">
-        <h2>新規登録</h2>
-        <label for="new-username">ユーザー名:</label>
-        <input type="text" id="new-username" name="new-username" required>
-        <label for="new-password">パスワード:</label>
-        <input type="password" id="new-password" name="new-password" required>
-        <button onclick="register()">登録</button>
-        <button onclick="showLogin()">戻る</button>
-    </div>
 
     <div class="menu hidden">
         <h2>兵士育成メニュー</h2>
@@ -106,56 +86,47 @@
     <script src="multiplayer.js"></script>
     <script>
         let resources = 100; // 初期資源量
-        const users = JSON.parse(localStorage.getItem('users')) || {};
+        let userIP = '';
 
-        function showRegister() {
-            document.querySelector('.login').classList.add('hidden');
-            document.querySelector('.register').classList.remove('hidden');
+        function getUserIP() {
+            fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => {
+                    userIP = data.ip;
+                    loadUserData();
+                });
         }
 
-        function showLogin() {
-            document.querySelector('.register').classList.add('hidden');
-            document.querySelector('.login').classList.remove('hidden');
-        }
-
-        function register() {
-            const username = document.getElementById('new-username').value;
-            const password = document.getElementById('new-password').value;
-
-            if (!users[username]) {
-                users[username] = password;
-                localStorage.setItem('users', JSON.stringify(users));
-                alert("登録が完了しました。ログインしてください。");
-                showLogin();
-            } else {
-                alert("そのユーザー名はすでに使用されています。");
-            }
-        }
-
-        function login() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-
-            if (users[username] && users[username] === password) {
-                document.querySelector('.login').classList.add('hidden');
+        function loadUserData() {
+            const users = JSON.parse(localStorage.getItem('users')) || {};
+            if (users[userIP]) {
                 document.querySelector('.menu').classList.remove('hidden');
                 document.querySelector('.battle').classList.remove('hidden');
                 document.querySelector('.research').classList.remove('hidden');
                 document.querySelector('.email').classList.remove('hidden');
                 document.querySelector('.status').classList.remove('hidden');
+                // Load user-specific data if needed
             } else {
-                alert("ユーザー名またはパスワードが違います。");
+                // Initialize new user data
+                users[userIP] = { /* user data structure */ };
+                localStorage.setItem('users', JSON.stringify(users));
+                document.querySelector('.menu').classList.remove('hidden');
+                document.querySelector('.battle').classList.remove('hidden');
+                document.querySelector('.research').classList.remove('hidden');
+                document.querySelector('.email').classList.remove('hidden');
+                document.querySelector('.status').classList.remove('hidden');
             }
         }
 
         function logout() {
-            document.querySelector('.login').classList.remove('hidden');
             document.querySelector('.menu').classList.add('hidden');
             document.querySelector('.battle').classList.add('hidden');
             document.querySelector('.research').classList.add('hidden');
             document.querySelector('.email').classList.add('hidden');
             document.querySelector('.status').classList.add('hidden');
         }
+
+        getUserIP();
     </script>
 </body>
 </html>
