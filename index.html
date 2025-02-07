@@ -4,9 +4,113 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RTS/MMOゲーム</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header, .menu, .login, .battle, .research {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            margin: 10px 0;
+            width: 80%;
+            text-align: center;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-    <h1>ようこそ、RTS/MMOゲームへ</h1>
-    <p>このページは現在開発中です。</p>
+    <header>
+        <h1>ようこそ、RTS/MMOゲームへ</h1>
+    </header>
+
+    <div class="login">
+        <h2>ログイン</h2>
+        <label for="username">ユーザー名:</label>
+        <input type="text" id="username" name="username" required>
+        <label for="password">パスワード:</label>
+        <input type="password" id="password" name="password" required>
+        <button onclick="login()">ログイン</button>
+    </div>
+
+    <div class="menu hidden">
+        <h2>兵士育成メニュー</h2>
+        <button onclick="trainSoldier()">兵士を訓練する</button>
+        <button onclick="logout()">ログアウト</button>
+    </div>
+
+    <div class="battle hidden">
+        <h2>オンライン対戦</h2>
+        <button onclick="startBattle()">対戦開始</button>
+        <p id="battle-result"></p>
+    </div>
+
+    <div class="research hidden">
+        <h2>研究メニュー</h2>
+        <button onclick="researchSoldierTraining()">兵士訓練の研究</button>
+        <button onclick="researchSoldierTier()">兵士ティアの研究</button>
+        <p id="research-result"></p>
+    </div>
+
+    <script>
+        let resources = 100; // 初期資源量
+
+        function login() {
+            // 簡易的なログイン処理（実際にはサーバー側で処理）
+            document.querySelector('.login').classList.add('hidden');
+            document.querySelector('.menu').classList.remove('hidden');
+            document.querySelector('.battle').classList.remove('hidden');
+            document.querySelector('.research').classList.remove('hidden');
+        }
+
+        function logout() {
+            document.querySelector('.login').classList.remove('hidden');
+            document.querySelector('.menu').classList.add('hidden');
+            document.querySelector('.battle').classList.add('hidden');
+            document.querySelector('.research').classList.add('hidden');
+        }
+
+        function trainSoldier() {
+            alert("兵士が訓練されました！");
+        }
+
+        function startBattle() {
+            // 簡易的な対戦結果（実際にはサーバー側で処理）
+            let result = Math.random() > 0.5 ? "あなたの勝ちです！" : "あなたの負けです。";
+            document.getElementById('battle-result').innerText = result;
+        }
+
+        function researchSoldierTraining() {
+            if (resources >= 50) {
+                resources -= 50;
+                alert("兵士訓練の研究が完了しました！一度に訓練できる兵士の数が増えます。");
+                document.getElementById('research-result').innerText = "兵士訓練の研究が完了しました！";
+            } else {
+                alert("資源が不足しています。");
+            }
+        }
+
+        function researchSoldierTier() {
+            if (resources >= 50) {
+                resources -= 50;
+                alert("兵士ティアの研究が完了しました！兵士のティアが上がります。");
+                document.getElementById('research-result').innerText = "兵士ティアの研究が完了しました！";
+            } else {
+                alert("資源が不足しています。");
+            }
+        }
+    </script>
 </body>
 </html>
