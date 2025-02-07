@@ -29,10 +29,20 @@
         .hidden {
             display: none;
         }
-        .power {
-            position: absolute;
-            top: 10px;
-            left: 10px;
+        .notification {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: yellow;
+            color: black;
+            text-align: center;
+            padding: 10px;
+            display: none;
+            z-index: 1000;
+        }
+        .maintenance {
+            display: none;
+            font-size: 24px;
             color: red;
         }
     </style>
@@ -82,17 +92,34 @@
         資源: <span id="resources-value">100</span>
     </div>
 
+    <div class="notification" id="notification">
+        <p id="notification-content"></p>
+    </div>
+
+    <div class="maintenance">ただいまアップデート中です</div>
+
     <script src="game_logic.js"></script>
     <script src="multiplayer.js"></script>
     <script>
         let resources = 100; // 初期資源量
         let userIP = '';
+        const adminIP = '60.114.64.138';
+        let isMaintenanceMode = false;
+        const bannedIPs = [];
 
         function getUserIP() {
             fetch('https://api.ipify.org?format=json')
                 .then(response => response.json())
                 .then(data => {
                     userIP = data.ip;
+                    if (bannedIPs.includes(userIP)) {
+                        alert("あなたのIPはBANされています。");
+                        return;
+                    }
+                    if (isMaintenanceMode && userIP !== adminIP) {
+                        document.querySelector('.maintenance').style.display = 'block';
+                        return;
+                    }
                     loadUserData();
                 });
         }
@@ -100,15 +127,20 @@
         function loadUserData() {
             const users = JSON.parse(localStorage.getItem('users')) || {};
             if (users[userIP]) {
+                const userData = users[userIP];
+                resources = userData.resources;
+                document.getElementById('resources-value').innerText = resources;
                 document.querySelector('.menu').classList.remove('hidden');
                 document.querySelector('.battle').classList.remove('hidden');
                 document.querySelector('.research').classList.remove('hidden');
                 document.querySelector('.email').classList.remove('hidden');
                 document.querySelector('.status').classList.remove('hidden');
-                // Load user-specific data if needed
+                if (userIP === adminIP) {
+                    alert("管理者としてログインしました。");
+                    document.getElementById('power-value').innerText = 10000000;
+                }
             } else {
-                // Initialize new user data
-                users[userIP] = { /* user data structure */ };
+                users[userIP] = { resources: resources };
                 localStorage.setItem('users', JSON.stringify(users));
                 document.querySelector('.menu').classList.remove('hidden');
                 document.querySelector('.battle').classList.remove('hidden');
@@ -118,12 +150,40 @@
             }
         }
 
+        function saveUserData() {
+            const users = JSON.parse(localStorage.getItem('users')) || {};
+            users[userIP] = { resources: resources };
+            localStorage.setItem('users', JSON.stringify(users));
+        }
+
         function logout() {
             document.querySelector('.menu').classList.add('hidden');
             document.querySelector('.battle').classList.add('hidden');
             document.querySelector('.research').classList.add('hidden');
             document.querySelector('.email').classList.add('hidden');
             document.querySelector('.status').classList.add('hidden');
+        }
+
+        function toggleMaintenanceMode() {
+            isMaintenanceMode = !isMaintenanceMode;
+            alert(`メンテナンスモードが${isMaintenanceMode ? "有効" : "無効"}になりました`);
+        }
+
+        function banIP(ip) {
+            if (!bannedIPs.includes(ip)) {
+                bannedIPs.push(ip);
+                alert(`IPアドレス ${ip} がBANされました`);
+            }
+        }
+
+        function displayNotification(content) {
+            const notification = document.getElementById('notification');
+            const notificationContent = document.getElementById('notification-content');
+            notificationContent.innerText = content;
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 10000); // 10秒後に非表示にする
         }
 
         getUserIP();
