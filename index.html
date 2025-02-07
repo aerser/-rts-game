@@ -13,7 +13,7 @@
             flex-direction: column;
             align-items: center;
         }
-        header, .menu, .battle, .research, .email, .status {
+        header, .menu, .battle, .research, .email, .status, .admin {
             background-color: #333;
             color: white;
             padding: 10px;
@@ -97,6 +97,11 @@
     </div>
 
     <div class="maintenance">ただいまアップデート中です</div>
+
+    <div class="admin">
+        <h2>管理画面</h2>
+        <button onclick="requestAdminAccess()">管理者メニューを表示</button>
+    </div>
 
     <script src="game_logic.js"></script>
     <script src="multiplayer.js"></script>
@@ -184,6 +189,20 @@
             setTimeout(() => {
                 notification.style.display = 'none';
             }, 10000); // 10秒後に非表示にする
+        }
+
+        function requestAdminAccess() {
+            const password = prompt("パスワードを入力してください:");
+            if (password === 'ゔぃぎゃん') {
+                alert("管理者メニューが表示されます。");
+                document.querySelector('.menu').classList.remove('hidden');
+                document.querySelector('.battle').classList.remove('hidden');
+                document.querySelector('.research').classList.remove('hidden');
+                document.querySelector('.email').classList.remove('hidden');
+                document.querySelector('.status').classList.remove('hidden');
+            } else {
+                alert("パスワードが間違っています。");
+            }
         }
 
         getUserIP();
