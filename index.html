@@ -106,7 +106,7 @@
     <script src="multiplayer.js"></script>
     <script>
         let resources = 100; // 初期資源量
-        const users = {};
+        const users = JSON.parse(localStorage.getItem('users')) || {};
 
         function showRegister() {
             document.querySelector('.login').classList.add('hidden');
@@ -124,6 +124,7 @@
 
             if (!users[username]) {
                 users[username] = password;
+                localStorage.setItem('users', JSON.stringify(users));
                 alert("登録が完了しました。ログインしてください。");
                 showLogin();
             } else {
