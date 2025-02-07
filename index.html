@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RTS/MMOゲーム</title>
+    <title>LORD WAR</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -33,7 +33,7 @@
 </head>
 <body>
     <header>
-        <h1>ようこそ、RTS/MMOゲームへ</h1>
+        <h1>ようこそ、LORD WARへ</h1>
     </header>
 
     <div class="login">
@@ -66,13 +66,21 @@
 
     <script>
         let resources = 100; // 初期資源量
+        const adminUsername = "ゔぃぎゃん";
+        const adminPassword = "123123";
 
         function login() {
-            // 簡易的なログイン処理（実際にはサーバー側で処理）
-            document.querySelector('.login').classList.add('hidden');
-            document.querySelector('.menu').classList.remove('hidden');
-            document.querySelector('.battle').classList.remove('hidden');
-            document.querySelector('.research').classList.remove('hidden');
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (username === adminUsername && password === adminPassword) {
+                document.querySelector('.login').classList.add('hidden');
+                document.querySelector('.menu').classList.remove('hidden');
+                document.querySelector('.battle').classList.remove('hidden');
+                document.querySelector('.research').classList.remove('hidden');
+            } else {
+                alert("ユーザー名またはパスワードが違います。");
+            }
         }
 
         function logout() {
@@ -87,7 +95,6 @@
         }
 
         function startBattle() {
-            // 簡易的な対戦結果（実際にはサーバー側で処理）
             let result = Math.random() > 0.5 ? "あなたの勝ちです！" : "あなたの負けです。";
             document.getElementById('battle-result').innerText = result;
         }
