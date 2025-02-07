@@ -13,7 +13,7 @@
             flex-direction: column;
             align-items: center;
         }
-        header, .menu, .login, .battle, .research, .email, .status {
+        header, .menu, .login, .register, .battle, .research, .email, .status {
             background-color: #333;
             color: white;
             padding: 10px;
@@ -49,6 +49,17 @@
         <label for="password">パスワード:</label>
         <input type="password" id="password" name="password" required>
         <button onclick="login()">ログイン</button>
+        <button onclick="showRegister()">新規登録</button>
+    </div>
+
+    <div class="register hidden">
+        <h2>新規登録</h2>
+        <label for="new-username">ユーザー名:</label>
+        <input type="text" id="new-username" name="new-username" required>
+        <label for="new-password">パスワード:</label>
+        <input type="password" id="new-password" name="new-password" required>
+        <button onclick="register()">登録</button>
+        <button onclick="showLogin()">戻る</button>
     </div>
 
     <div class="menu hidden">
@@ -95,14 +106,36 @@
     <script src="multiplayer.js"></script>
     <script>
         let resources = 100; // 初期資源量
-        const adminUsername = "ゔぃぎゃん";
-        const adminPassword = "123123";
+        const users = {};
+
+        function showRegister() {
+            document.querySelector('.login').classList.add('hidden');
+            document.querySelector('.register').classList.remove('hidden');
+        }
+
+        function showLogin() {
+            document.querySelector('.register').classList.add('hidden');
+            document.querySelector('.login').classList.remove('hidden');
+        }
+
+        function register() {
+            const username = document.getElementById('new-username').value;
+            const password = document.getElementById('new-password').value;
+
+            if (!users[username]) {
+                users[username] = password;
+                alert("登録が完了しました。ログインしてください。");
+                showLogin();
+            } else {
+                alert("そのユーザー名はすでに使用されています。");
+            }
+        }
 
         function login() {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
-            if (username === adminUsername && password === adminPassword) {
+            if (users[username] && users[username] === password) {
                 document.querySelector('.login').classList.add('hidden');
                 document.querySelector('.menu').classList.remove('hidden');
                 document.querySelector('.battle').classList.remove('hidden');
