@@ -13,7 +13,7 @@
             flex-direction: column;
             align-items: center;
         }
-        header, .menu, .login, .battle, .research {
+        header, .menu, .login, .battle, .research, .email, .status {
             background-color: #333;
             color: white;
             padding: 10px;
@@ -28,6 +28,12 @@
         }
         .hidden {
             display: none;
+        }
+        .power {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: red;
         }
     </style>
 </head>
@@ -49,12 +55,14 @@
         <h2>兵士育成メニュー</h2>
         <button onclick="trainSoldier()">兵士を訓練する</button>
         <button onclick="logout()">ログアウト</button>
+        <div id="soldier-count">兵士数: 0</div>
     </div>
 
     <div class="battle hidden">
         <h2>オンライン対戦</h2>
         <button onclick="startBattle()">対戦開始</button>
         <p id="battle-result"></p>
+        <p id="matchmaking-status">マッチメイキング中...</p>
     </div>
 
     <div class="research hidden">
@@ -64,6 +72,23 @@
         <p id="research-result"></p>
     </div>
 
+    <div class="email hidden">
+        <h2>メール</h2>
+        <textarea id="email-content" placeholder="全プレイヤーに送るメッセージを入力"></textarea>
+        <button onclick="sendEmail()">メール送信</button>
+    </div>
+
+    <div class="status hidden">
+        <h2>ステータス</h2>
+        <div id="online-users">オンラインユーザー数: 0</div>
+    </div>
+
+    <div class="power">
+        パワー: <span id="power-value">0</span>
+    </div>
+
+    <script src="game_logic.js"></script>
+    <script src="multiplayer.js"></script>
     <script>
         let resources = 100; // 初期資源量
         const adminUsername = "ゔぃぎゃん";
@@ -78,6 +103,8 @@
                 document.querySelector('.menu').classList.remove('hidden');
                 document.querySelector('.battle').classList.remove('hidden');
                 document.querySelector('.research').classList.remove('hidden');
+                document.querySelector('.email').classList.remove('hidden');
+                document.querySelector('.status').classList.remove('hidden');
             } else {
                 alert("ユーザー名またはパスワードが違います。");
             }
@@ -88,35 +115,8 @@
             document.querySelector('.menu').classList.add('hidden');
             document.querySelector('.battle').classList.add('hidden');
             document.querySelector('.research').classList.add('hidden');
-        }
-
-        function trainSoldier() {
-            alert("兵士が訓練されました！");
-        }
-
-        function startBattle() {
-            let result = Math.random() > 0.5 ? "あなたの勝ちです！" : "あなたの負けです。";
-            document.getElementById('battle-result').innerText = result;
-        }
-
-        function researchSoldierTraining() {
-            if (resources >= 50) {
-                resources -= 50;
-                alert("兵士訓練の研究が完了しました！一度に訓練できる兵士の数が増えます。");
-                document.getElementById('research-result').innerText = "兵士訓練の研究が完了しました！";
-            } else {
-                alert("資源が不足しています。");
-            }
-        }
-
-        function researchSoldierTier() {
-            if (resources >= 50) {
-                resources -= 50;
-                alert("兵士ティアの研究が完了しました！兵士のティアが上がります。");
-                document.getElementById('research-result').innerText = "兵士ティアの研究が完了しました！";
-            } else {
-                alert("資源が不足しています。");
-            }
+            document.querySelector('.email').classList.add('hidden');
+            document.querySelector('.status').classList.add('hidden');
         }
     </script>
 </body>
