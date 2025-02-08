@@ -1,10 +1,122 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <!-- (省略) -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LORD WAR</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header, .menu, .battle, .research, .email, .status {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            margin: 10px 0;
+            width: 80%;
+            text-align: center;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+        }
+        .hidden {
+            display: none;
+        }
+        .notification {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: yellow;
+            color: black;
+            text-align: center;
+            padding: 10px;
+            display: none;
+            z-index: 1000;
+        }
+        .power {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: red;
+        }
+        .admin {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            margin: 10px 0;
+            width: 80%;
+            text-align: center;
+            border-radius: 5px;
+        }
+        .maintenance {
+            display: none;
+            font-size: 24px;
+            color: red;
+        }
+    </style>
 </head>
 <body>
-    <!-- (省略) -->
+    <header>
+        <h1>ようこそ、LORD WARへ</h1>
+    </header>
+
+    <div class="menu hidden">
+        <h2>兵士育成メニュー</h2>
+        <button onclick="trainSoldier()">兵士を訓練する</button>
+        <button onclick="logout()">ログアウト</button>
+        <div id="soldier-count">兵士数: 0</div>
+    </div>
+
+    <div class="battle hidden">
+        <h2>オンライン対戦</h2>
+        <button onclick="startBattle()">対戦開始</button>
+        <p id="battle-result"></p>
+        <p id="matchmaking-status">マッチメイキング中...</p>
+    </div>
+
+    <div class="research hidden">
+        <h2>研究メニュー</h2>
+        <button onclick="researchSoldierTraining()">兵士訓練の研究</button>
+        <button onclick="researchSoldierTier()">兵士ティアの研究</button>
+        <button onclick="researchResourceGain()">資源増加の研究</button>
+        <p id="research-result"></p>
+    </div>
+
+    <div class="email hidden">
+        <h2>メール</h2>
+        <textarea id="email-content" placeholder="全プレイヤーに送るメッセージを入力"></textarea>
+        <button onclick="sendEmail()">メール送信</button>
+    </div>
+
+    <div class="status hidden">
+        <h2>ステータス</h2>
+        <div id="online-users">オンラインユーザー数: 0</div>
+    </div>
+
+    <div class="power">
+        パワー: <span id="power-value">0</span>
+    </div>
+    <div class="resources">
+        資源: <span id="resources-value">100</span>
+    </div>
+
+    <div class="notification" id="notification">
+        <p id="notification-content"></p>
+    </div>
+
+    <div class="maintenance">ただいまアップデート中です</div>
+
+    <div class="admin">
+        <h2>管理画面</h2>
+        <button onclick="requestAdminAccess()">管理者メニューを表示</button>
+    </div>
 
     <script src="game_logic.js"></script>
     <script src="multiplayer.js"></script>
